@@ -41,7 +41,8 @@ Parse from the invocation; ask only if the prompt itself is missing.
 
 ## Guardrails
 
-- **Credits are real.** Read the settings popover's "Generating will use N credits" line. If N > 0, state settings + N in one line and get a yes before generating unless the user already approved that cost in this conversation. Never more than **8 generations per invocation** without a fresh yes.
+- **Credits are real.** Read the settings popover's "Generating will use N credits" line. If N > 0, check the balance (step 5) and confirm in one plain line — settings, cost, balance, what's left — e.g. `Veo 3.1 Fast · 9:16 · x2 = 40 credits (you have 40 → 0 left). Go?` Get a yes unless the user already approved that cost in this conversation. Never more than **8 generations per invocation** without a fresh yes.
+- **Can't afford it?** Don't generate. Say how many credits are short, offer the cheapest option that fits (another model, fewer outputs, 360p/shorter for models that offer it), and when the balance refills.
 - Keep usage at normal hands-on volume. Do not add randomized delays or anything else meant to disguise automation; waits are only for the UI to settle.
 - Never touch account, billing, Upgrade, Share, Publish to YouTube, or Flag controls. If a credits/upgrade prompt appears, stop and report it.
 - Sign-in page, consent screen, or CAPTCHA → stop and ask the user to handle it.
@@ -62,6 +63,7 @@ Parse from the invocation; ask only if the prompt itself is missing.
 4. **Direct mode.** Close the Agent panel if open; make sure the composer's **Agent** chip is off so the **"Settings trigger"** chip shows.
 
 5. **Configure.** Click "Settings trigger" → Image/Video tab → (video) Frames if `--start/--end`, else Ingredients → aspect → model → count. Read the credits line, then Escape. Zoom-screenshot the chip to confirm.
+   If the cost is > 0, read the balance: avatar → **"N Google Flow credits"** + refill time → close the panel (see ui-map *Credit balance*). Skip this for free generations.
 
 6. **Attach refs** (per file): click the Start/End slot or `+` → **Upload media** → `find` "claude upload target" → `file_upload` → wait ~3 s → click the uploaded filename in the picker list → **Add to prompt**. Confirm the thumbnail in the composer. Never click an upload control unless `page-hooks.js` ran on this page load.
 
@@ -73,7 +75,7 @@ Parse from the invocation; ask only if the prompt itself is missing.
    `collect.sh collect "<out>" "<prompt>"`
    Exit 4 = nothing arrived; it prints any interrupted downloads. Flow's "downloaded" toast shows even when nothing was saved. If the user reports a "flow.google.com wants to save" dialog, have them click Cancel and run `/google-flow:setup` (step 4 fixes it).
 
-10. **Report.** Saved paths, settings, credits used. Close the tab unless the user wants it.
+10. **Report.** Saved paths, settings, credits used. If credits were spent, re-read the balance and add a one-line wallet update, e.g. `🎟️ 20 credits left · ~2 more Veo Lite clips · refills at 21:01`. Close the tab unless the user wants it.
 
 ## When the UI doesn't match
 

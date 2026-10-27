@@ -50,12 +50,14 @@ Then reload the Flow tab (navigate to `https://flow.google.com/` again) — the 
   - File arrives → 🎉 show the path.
   - Exit 4 → ask whether a save window popped up. If yes: have them click **Cancel**, double-check step 4 (exact address `https://flow.google.com`, then reload), and try the download once more. If no window and still nothing: report the script output and stop.
 
-**6. Done.** Run `collect.sh setup-done "${CLAUDE_PLUGIN_DATA}"`. Close the tab. Celebrate briefly and show 2–3 starter commands:
+**6. Done.** Run `collect.sh setup-done "${CLAUDE_PLUGIN_DATA}"`. Celebrate briefly and show 2–3 starter commands:
 ```
 /google-flow:generate image "a cozy reading nook, rainy window, warm lamp light" --count 2
 /google-flow:generate video "slow push-in on a steaming cup of coffee" --aspect 9:16
 /google-flow:generate video "the robot starts dancing" --start ./flow-output/<their test image>
 ```
-Remind them: Claude always asks before spending credits.
+Then show their credit menu: follow the `google-flow:credits` skill's steps 2–4 (reusing the open tab — do this before closing it) so they know exactly how many images and videos they can make. Remind them: Claude always asks before spending credits, and `/google-flow:credits` shows the menu again anytime.
+
+Close the tab when you're finished.
 
 If they want to stop partway, that's fine — don't mark setup done; tell them `/google-flow:setup` picks up from the top anytime.

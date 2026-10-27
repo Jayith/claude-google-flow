@@ -66,7 +66,7 @@ Run `/google-flow:setup`, or just ask for your first image and Claude starts set
 | 3 | 📁 Your browser has a working download folder | Pick a folder in the browser's download settings |
 | 4 | 🙅 Flow's "wants to save" pop-up is turned off | Add `https://flow.google.com` under **Not allowed to edit files** (Claude gives you the link) |
 
-Then it does a **free test run**, a tiny robot waving hello 🤖👋, to prove everything works from start to finish.
+Then it does a **free test run**, a tiny robot waving hello 🤖👋, to prove everything works from start to finish, and shows you how many images and videos your credits can buy.
 
 <details>
 <summary>Why step 4?</summary>
@@ -99,10 +99,37 @@ Or just talk to it:
 >
 > *"Animate the last image you made, slow zoom out"*
 
+## 🎟️ What can I make?
+
+```
+/google-flow:credits
+```
+
+Claude peeks at your Flow wallet and the live prices (without spending anything) and hands you a menu:
+
+```
+🎟️ You have 40 Flow credits · refills daily at 21:01
+
+🍌 Images: free on your plan
+   Nano Banana 2.1 · Nano Banana 2 Lite · Nano Banana Pro: 0 credits, up to 4 per prompt
+
+🎬 Videos (one 8 s clip each)
+   Omni 1.1 Flash 360p   6 cr   → 6 clips
+   Veo 3.1 Lite         10 cr   → 4 clips
+   Omni 1.1 Flash 720p  12 cr   → 3 clips
+   Veo 3.1 Fast         20 cr   → 2 clips
+   Veo 3.1 Quality     100 cr   → not yet (60 short)
+```
+
+*(Example from one account. Prices depend on your Google plan and change over time, so Claude always reads the live numbers.)*
+
 ### 💳 Credits stay in your hands
 
-- Before generating, Claude reads Flow's **"Generating will use N credits"** line. If it costs anything, **Claude asks you first.**
-- At most 8 generations per request unless you say more.
+- Before anything that costs credits, Claude shows you the bill and waits for your yes:
+  `Veo 3.1 Fast · 9:16 · x2 = 40 credits (you have 40 → 0 left). Go?`
+- Not enough credits? Claude won't try. It tells you how many you're short, suggests a cheaper option that fits, and tells you when your credits refill.
+- After spending, you get a wallet update: `🎟️ 20 credits left · ~2 more Veo Lite clips · refills at 21:01`
+- Free generations (like images on many plans) just go. Each prompt makes 1–4 results, and the plugin does at most 8 generations per request unless you say more.
 - It never touches billing, upgrades, sharing or publishing, and it stops at sign-in pages and CAPTCHAs.
 
 ## 🔧 Troubleshooting
@@ -131,7 +158,7 @@ Don't change the user's browser settings yourself. Setup tells them what to clic
 
 ## 🧠 How it works
 
-The plugin is two [skills](plugins/google-flow/skills) (`setup` and `generate`): instructions Claude follows using the Claude in Chrome tools. It also has a few helpers:
+The plugin is three [skills](plugins/google-flow/skills) (`setup`, `generate` and `credits`): instructions Claude follows using the Claude in Chrome tools. It also has a few helpers:
 
 - [`ui-map.md`](plugins/google-flow/skills/generate/reference/ui-map.md): a field guide to every button in Flow, checked against the live site
 - [`page-hooks.js`](plugins/google-flow/skills/generate/reference/page-hooks.js): lets Claude attach your local files without a system file picker

@@ -21,9 +21,24 @@ URL: `https://labs.google/fx/tools/flow` → redirects to `https://flow.google.c
 - Tabs: **Image** | **Video**
 - Image: aspect `16:9 4:3 1:1 3:4 9:16`; model dropdown (**Nano Banana 2.1**, Nano Banana 2 Lite, Nano Banana Pro); count `x1–x4`.
 - Video: sub-mode **Frames** | **Ingredients**; aspect `16:9 9:16`; model dropdown (**Veo 3.1 - Lite**, Veo 3.1 - Fast, Veo 3.1 - Quality, Omni 1.1 Flash); count `x1–x4`. Chip shows `Video · 720p · 8s`.
-- Footer line: **"Generating will use N credits"** — read this for the credit guardrail. Observed: Nano Banana 2.1 ×1 = 0 credits; Veo 3.1 Lite ×1 = 10 credits.
+- Video › **Omni 1.1 Flash** adds two extra rows: resolution **360p | 720p** and duration **4s | 6s | 8s | 10s**. Selecting it the first time shows a purple "You're generating with Gemini Omni Flash…" promo card with a **Got it** button behind the popover — harmless.
+- Footer line: **"Generating will use N credits"** — the live price for the current settings; always read it, never assume. It scales linearly with the x1–x4 count.
 - Close with Escape. Selections persist in the composer.
 - Text-to-video = Video + Ingredients with no ingredients attached (or Frames with no frames).
+
+## Credit balance
+- Click the avatar (**"Account details"**, top right) → a Google account panel shows a link **"N Google Flow credits"** and the line **"Credits refresh daily at HH:MM"** (local time). Read both, then close the panel with its ✕ (**"Close"**). Don't follow the credits link — it goes to the Google One account page.
+- Never click Upgrade / Manage subscription / Sign out in that panel.
+
+## Prices seen (2026-10-27, one account on a Google AI plan — yours may differ; read live)
+| Setting (x1) | Credits |
+|---|---|
+| Nano Banana 2.1 / 2 Lite / Pro, any aspect, x1–x4 | 0 |
+| Veo 3.1 - Lite, 8s 720p | 10 |
+| Veo 3.1 - Fast | 20 |
+| Veo 3.1 - Quality | 100 |
+| Omni 1.1 Flash 360p 8s | 6 |
+| Omni 1.1 Flash 720p 8s / 10s | 12 / 15 |
 
 ## Attaching images
 - Video › Frames: composer shows **Start** ⇄ **End** slots. Video › Ingredients / Image: use `+`.
