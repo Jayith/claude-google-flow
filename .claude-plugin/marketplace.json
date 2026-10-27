@@ -8,7 +8,7 @@
     {
       "name": "google-flow",
       "source": "./plugins/google-flow",
-      "description": "Generate images and videos in Google Flow through Claude in Chrome and save them locally."
+      "description": "Make images and videos in Google Flow just by asking Claude. Run /google-flow:setup first."
     }
   ]
 }

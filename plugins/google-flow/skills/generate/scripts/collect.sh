@@ -3,14 +3,17 @@
 #
 #   collect.sh mark                        remember "now" so later downloads can be found
 #   collect.sh dir                         print the browser's download folder
+#   collect.sh browser                     print the detected browser and its settings URL scheme
 #   collect.sh collect <out_dir> <prompt>  move downloads newer than the mark into out_dir
+#   collect.sh setup-status <state_dir>    exit 0 if first-time setup was completed, 5 if not
+#   collect.sh setup-done <state_dir>      record that first-time setup was completed
 #
 # Env overrides:
 #   FLOW_DOWNLOADS        download folder (skips browser detection)
 #   FLOW_BROWSER_PROFILE  Chromium profile dir containing Preferences / History
 #
 # Works on macOS, Linux and Windows (Git Bash). Exit codes: 0 ok, 1 usage/no mark,
-# 3 download folder missing, 4 nothing downloaded.
+# 3 download folder missing, 4 nothing downloaded, 5 setup needed.
 set -euo pipefail
 
 MARK="${TMPDIR:-/tmp}/google-flow.mark"
@@ -87,10 +90,26 @@ case "${1:-}" in
     touch "$MARK"
     dl=$(download_dir)
     [[ -d "$dl" ]] || { echo "WARNING: browser download folder does not exist: $dl" >&2; exit 3; }
+    prof=$(browser_profile)
+    if [[ -n "$prof" ]] && grep -q '"prompt_for_download":true' "$prof/Preferences" 2>/dev/null; then
+      echo "WARNING: the browser asks where to save each download; turn that off in its download settings" >&2
+    fi
     echo "marked $(date '+%H:%M:%S'); downloads go to $dl"
     ;;
   dir)
     download_dir
+    ;;
+  browser)
+    # name + settings URL scheme of the detected browser, e.g. "brave brave://"
+    case "$(browser_profile)" in
+      *BraveSoftware*) echo "brave brave://" ;;
+      *Edge* | *edge*) echo "edge edge://" ;;
+      *Vivaldi* | *vivaldi*) echo "vivaldi vivaldi://" ;;
+      *Arc*) echo "arc chrome://" ;;
+      *Chromium* | *chromium*) echo "chromium chrome://" ;;
+      *Chrome* | *chrome*) echo "chrome chrome://" ;;
+      *) echo "unknown chrome://" ;;
+    esac
     ;;
   collect)
     out="${2:?out dir required}"
@@ -98,7 +117,9 @@ case "${1:-}" in
     [[ -f "$MARK" ]] || { echo "no mark; run '$0 mark' first" >&2; exit 1; }
     dl=$(download_dir)
     mkdir -p "$out"
-    slug=$(printf '%s' "$prompt" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | cut -c1-40 | sed 's/^-*//; s/-*$//')
+    slug=$(printf '%s' "$prompt" | tr '[:upper:]' '[:lower:]' | tr -cs 'a-z0-9' '-' | sed 's/^-*//; s/-*$//')
+    # keep it short, cutting at a word boundary
+    if (( ${#slug} > 40 )); then slug=${slug:0:41}; slug=${slug%-*}; fi
     stamp=$(date '+%Y%m%d-%H%M%S')
     # wait for in-progress downloads to finish (up to 2 min)
     for _ in $(seq 60); do
@@ -119,8 +140,18 @@ case "${1:-}" in
       exit 4
     fi
     ;;
+  setup-status)
+    state="${2:?state dir required}"
+    if [[ -f "$state/setup-done" ]]; then echo "setup done $(cat "$state/setup-done")"; else echo "setup needed"; exit 5; fi
+    ;;
+  setup-done)
+    state="${2:?state dir required}"
+    mkdir -p "$state"
+    date '+%Y-%m-%d' > "$state/setup-done"
+    echo "setup marked done"
+    ;;
   *)
-    echo "usage: $0 mark | dir | collect <out_dir> <prompt>" >&2
+    echo "usage: $0 mark | dir | collect <out_dir> <prompt> | setup-status <state_dir> | setup-done <state_dir>" >&2
     exit 2
     ;;
 esac

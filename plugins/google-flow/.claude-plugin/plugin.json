@@ -1,8 +1,8 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "google-flow",
-  "version": "0.1.0",
-  "description": "Generate images and videos in Google Flow from Claude Code by driving your signed-in browser through Claude in Chrome, then save the results to a local folder.",
+  "version": "0.2.0",
+  "description": "Tell Claude what to make — it drives Google Flow in your signed-in browser (Nano Banana images, Veo videos) and drops the files on your computer. Includes a friendly first-time setup.",
   "author": {
     "name": "Jayith"
   },

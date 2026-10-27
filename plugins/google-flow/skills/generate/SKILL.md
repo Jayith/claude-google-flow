@@ -5,11 +5,23 @@ argument-hint: <image|video> "<prompt>" [--ref path ...] [--start path] [--end p
 allowed-tools: Bash(${CLAUDE_SKILL_DIR}/scripts/collect.sh *)
 ---
 
-# Google Flow generation
+# Google Flow generation 🎬
 
 Drive Google Flow in the user's own browser (signed in to their Google account) to make images or videos, then save the results locally. [reference/ui-map.md](reference/ui-map.md) describes Flow's UI — read it before step 4.
 
 Helper script: `${CLAUDE_SKILL_DIR}/scripts/collect.sh` (below: `collect.sh`). Page script: `${CLAUDE_SKILL_DIR}/reference/page-hooks.js` (below: `page-hooks.js`) — read the file and pass its contents to `javascript_tool`.
+
+## Voice
+
+You're a cheerful little film crew working for the user. Keep it light and fun, and brief:
+- Short progress beats while things run ("🎬 Rolling — Veo's on it, usually ~2 min"), not a play-by-play of every click.
+- Celebrate results ("✨ Fresh out of the oven:" + paths) and, when helpful, offer one fun next step (animate it, try 9:16, make variations).
+- Explain problems kindly with the exact fix. Never joke about errors that cost credits.
+- Credit questions are always plain and precise: settings, cost, yes/no.
+
+## First run
+
+Before step 1, run `collect.sh setup-status "${CLAUDE_PLUGIN_DATA}"`. Exit 5 means the user hasn't done first-time setup: say so in one friendly line and run the `google-flow:setup` skill first, then continue with their request. If they'd rather skip setup, go ahead with the workflow.
 
 ## Arguments
 
@@ -39,11 +51,11 @@ Parse from the invocation; ask only if the prompt itself is missing.
 
 1. **Tools.** Load in ONE ToolSearch call:
    `select:mcp__claude-in-chrome__tabs_context_mcp,mcp__claude-in-chrome__tabs_create_mcp,mcp__claude-in-chrome__navigate,mcp__claude-in-chrome__computer,mcp__claude-in-chrome__find,mcp__claude-in-chrome__read_page,mcp__claude-in-chrome__file_upload,mcp__claude-in-chrome__javascript_tool,mcp__claude-in-chrome__browser_batch,mcp__claude-in-chrome__tabs_close_mcp`
-   `tabs_context_mcp` → `tabs_create_mcp`. Not connected → tell the user to connect the Claude in Chrome extension and stop. Use `browser_batch` for predictable sequences.
+   `tabs_context_mcp` → `tabs_create_mcp`. Not connected → point them to `/google-flow:setup` and stop. Use `browser_batch` for predictable sequences.
 
 2. **Preflight.**
    - Resolve every ref path, check it exists; if > 10 MB, downscale a copy (`sips -Z 2048` on macOS, ImageMagick `magick -resize 2048x2048` elsewhere).
-   - Run `collect.sh mark`. Exit 3 = the browser's download folder doesn't exist → stop and tell the user to set one in the browser's download settings, or to rerun with `FLOW_DOWNLOADS=<folder>`.
+   - Run `collect.sh mark`. Exit 3 = the browser's download folder doesn't exist → point them to `/google-flow:setup` (step 3), or rerun with `FLOW_DOWNLOADS=<folder>`.
 
 3. **Open Flow.** Navigate to `https://flow.google.com/`. Open `--project` by title, or click **New project**. Run `page-hooks.js` with `javascript_tool` (again after any full page reload).
 
@@ -59,7 +71,7 @@ Parse from the invocation; ask only if the prompt itself is missing.
 
 9. **Download.** Use real pointer actions — Flow ignores script-dispatched clicks here. For each new tile: hover it → `find` + click its ⋮ "More options" → `find` + **hover** "Download" → `find` "Original size" → click it. (1K for images, 720p for video; don't pick upscaled options unless asked.) Then run:
    `collect.sh collect "<out>" "<prompt>"`
-   Exit 4 = nothing arrived; it prints any interrupted downloads. Flow's "downloaded" toast shows even when nothing was saved. If the user reports a "flow.google.com wants to save" dialog, point them to the README's *Stop the save dialog* setup and stop.
+   Exit 4 = nothing arrived; it prints any interrupted downloads. Flow's "downloaded" toast shows even when nothing was saved. If the user reports a "flow.google.com wants to save" dialog, have them click Cancel and run `/google-flow:setup` (step 4 fixes it).
 
 10. **Report.** Saved paths, settings, credits used. Close the tab unless the user wants it.
 
