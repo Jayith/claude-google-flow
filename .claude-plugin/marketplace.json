@@ -1,0 +1,14 @@
+{
+  "name": "claude-google-flow",
+  "description": "Unofficial Claude Code plugin for generating images and videos in Google Flow.",
+  "owner": {
+    "name": "Jayith"
+  },
+  "plugins": [
+    {
+      "name": "google-flow",
+      "source": "./plugins/google-flow",
+      "description": "Generate images and videos in Google Flow through Claude in Chrome and save them locally."
+    }
+  ]
+}
