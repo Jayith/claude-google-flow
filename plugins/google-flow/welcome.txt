@@ -1,0 +1,25 @@
+🎬  Google Flow for Claude Code is ready to roll!
+
+    Lights… camera… prompts. Ask Claude for pictures and videos, it makes
+    them in Google Flow and drops the files right on your computer.
+
+  ✨ Start here
+     /google-flow:setup       2-minute guided setup + a free test image 🤖👋
+
+  🎨 Make stuff
+     /google-flow:generate image "a corgi astronaut, cinematic" --count 2
+     /google-flow:generate video "steam rising from a coffee" --aspect 9:16
+     /google-flow:generate video "make it dance" --start ./robot.jpg
+
+     Options  --ref <img>   --start / --end <img>   --count 1-4
+              --model pro | lite | fast | quality   --out <folder>
+              --aspect 16:9 | 9:16 | 1:1 | 4:3 | 3:4
+
+  🎟️  Check your wallet
+     /google-flow:credits     credits left, refill time, what each model costs
+
+  👋 See this again
+     /google-flow:welcome
+
+  💬 Or just ask: "make me a 9:16 Veo clip of a paper boat in the rain"
+  💳 Claude always asks before spending credits. Have fun! ✨

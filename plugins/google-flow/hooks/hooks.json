@@ -1,0 +1,18 @@
+{
+  "description": "Show the Google Flow welcome card the first time Claude Code starts after install",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash",
+            "args": ["${CLAUDE_PLUGIN_ROOT}/hooks/welcome.sh"],
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

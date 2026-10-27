@@ -26,7 +26,7 @@ Open Claude Code and paste this:
 Install the Google Flow plugin from https://github.com/Jayith/claude-google-flow and set it up for me
 ```
 
-Claude installs it and walks you through a two-minute setup. That's the whole install.
+Claude installs it, shows you the welcome card with every command, and walks you through a two-minute setup. That's the whole install.
 
 <details>
 <summary>Prefer typing commands yourself?</summary>
@@ -37,16 +37,32 @@ In Claude Code:
 /plugin marketplace add Jayith/claude-google-flow
 /plugin install google-flow@claude-google-flow
 /reload-plugins
-/google-flow:setup
+/google-flow:welcome
 ```
 
-or in a terminal (then start Claude Code and run `/google-flow:setup`):
+or in a terminal (the welcome card pops up the next time you start Claude Code):
 
 ```bash
 claude plugin marketplace add Jayith/claude-google-flow
 claude plugin install google-flow@claude-google-flow
 ```
 </details>
+
+## 👋 The welcome card
+
+The first time you start Claude Code after installing, you're greeted with this. Bring it back anytime with `/google-flow:welcome`.
+
+```
+🎬  Google Flow for Claude Code is ready to roll!
+
+  ✨ Start here       /google-flow:setup
+  🎨 Make stuff       /google-flow:generate image "a corgi astronaut, cinematic"
+  🎟️  Your wallet      /google-flow:credits
+  👋 See this again   /google-flow:welcome
+
+  💬 Or just ask: "make me a 9:16 Veo clip of a paper boat in the rain"
+```
+<sub>(Shortened here. The real card also lists every option.)</sub>
 
 ## 🧰 What you need
 
@@ -151,14 +167,15 @@ If a user gives you this repository and asks you to install it, do this:
    claude plugin marketplace add Jayith/claude-google-flow
    claude plugin install google-flow@claude-google-flow
    ```
-2. Ask the user to run `/reload-plugins` (or restart Claude Code) so the new skills load.
-3. Then run the `google-flow:setup` skill (the user can also type `/google-flow:setup`).
+2. Show the user the welcome card: print the contents of the installed `welcome.txt` exactly as written, inside a plain code block. Find the file with
+   `ls ~/.claude/plugins/cache/claude-google-flow/google-flow/*/welcome.txt`
+3. Ask the user to run `/reload-plugins` (or restart Claude Code) so the new commands load, then start with `/google-flow:setup`.
 
 Don't change the user's browser settings yourself. Setup tells them what to click.
 
 ## 🧠 How it works
 
-The plugin is three [skills](plugins/google-flow/skills) (`setup`, `generate` and `credits`): instructions Claude follows using the Claude in Chrome tools. It also has a few helpers:
+The plugin is four [skills](plugins/google-flow/skills) (`welcome`, `setup`, `generate` and `credits`): instructions Claude follows using the Claude in Chrome tools. A one-time startup [hook](plugins/google-flow/hooks) shows the welcome card. It also has a few helpers:
 
 - [`ui-map.md`](plugins/google-flow/skills/generate/reference/ui-map.md): a field guide to every button in Flow, checked against the live site
 - [`page-hooks.js`](plugins/google-flow/skills/generate/reference/page-hooks.js): lets Claude attach your local files without a system file picker
