@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "google-flow",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Tell Claude what to make — it drives Google Flow in your signed-in browser (Nano Banana images, Veo videos) and drops the files on your computer. Includes a friendly first-time setup.",
   "author": {
     "name": "Jayith"

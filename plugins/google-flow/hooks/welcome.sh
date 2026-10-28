@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 # SessionStart hook: show the welcome card once, the first time Claude Code starts
-# after the plugin is installed. Prints nothing on later sessions.
+# after the plugin is installed. Prints nothing on later sessions, or once setup is done.
 set -euo pipefail
 
 root="${CLAUDE_PLUGIN_ROOT:-$(cd "$(dirname "$0")/.." && pwd)}"
 data="${CLAUDE_PLUGIN_DATA:-}"
 [[ -n "$data" ]] || exit 0
-[[ -f "$data/welcomed" ]] && exit 0
+[[ -f "$data/welcomed" || -f "$data/setup-done" ]] && exit 0
 
 # JSON-escape the card without needing jq or python.
 json_escape() {
